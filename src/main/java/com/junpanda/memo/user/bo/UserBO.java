@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 
 import com.junpanda.memo.common.EncryptUtils;
 import com.junpanda.memo.user.dao.UserDAO;
+import com.junpanda.memo.user.model.User;
 
 @Service
 public class UserBO {
@@ -18,5 +19,11 @@ public class UserBO {
 		String encPassword = EncryptUtils.md5(password);
 		
 		return userDAO.insertUser(loginId, encPassword, name, email);
+	}
+	
+	public User getUser(String loginId, String password) {
+		
+		
+		return userDAO.selectUser(loginId, EncryptUtils.md5(password));
 	}
 }

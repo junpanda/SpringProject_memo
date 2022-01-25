@@ -75,8 +75,7 @@
 					success:function(data){
 						if(data.result == "success"){
 							//로그인 화면으로 이동
-							//locatioin.href="/user/signin_view";
-							alert("회원가입 성공");
+							locatioin.href="/user/signin_view";
 						}
 						else{
 							alert("회원가입 실패");
