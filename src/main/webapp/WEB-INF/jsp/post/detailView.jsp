@@ -5,7 +5,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>리스트</title>
+<title>메모 보기</title>
 
 <!-- bootstrap CDN link -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
@@ -22,31 +22,48 @@
 		<c:import url="/WEB-INF/jsp/include/header.jsp" />
 		<section class="d-flex justify-content-center">
 			<div class="w-75 my-5">
-				<h1 class="text-center">메모게시판</h1>
-				
-				<table class="table">
-					<thead>
-						<tr>
-							<th>NO.</th>
-							<th>제목</th>
-							<th>시간</th>
-						</tr>
-					</thead>
-					<tbody>
-						<c:forEach var="post" items="${postList }">
-						<tr>
-							<td>${post.id }</td>
-							<td><a href="/post/detail_view?postId=${post.id }">${post.subject }</a></td>
-							<td>${post.createdAt }</td>
-						</tr>
-						</c:forEach>
-					</tbody>
-				</table>
-				
-				<a href="/post/create_view" class="btn btn-info">글쓰기</a>
+				<h1 class="text-center">메모 보기</h1>
+				<div class="d-flex mt-3">
+					<label class="mr-2">제목 : </label>
+					<input type="text" class="form-control col-11" id="titleInput" value="${post.subject }">
+				</div>
+				<textarea class="form-control mt-3" rows="5" id="contentInput">${post.content }</textarea>
+				<div class="d-flex justify-content-between mt-3">
+					<div>
+						<a href="/post/list_view" class="btn btn-info">목록으로</a>
+						<button type="button" class="btn btn-danger" id="deleteBtn" data-post-id="${post.id }">삭제</button>
+					</div>
+					<button type="button" class="btn btn-success" id="saveBtn">수정</button>
+				</div>
 			</div>
 		</section>
 		<c:import url="/WEB-INF/jsp/include/footer.jsp" />
 	</div>
 </body>
+	<script>
+		$(document).ready(function(){
+			$("#deleteBtn").on("click",function(){
+				
+				let postId = $(this).data("post-id");
+				
+				$.ajax({
+					type:"get",
+					url:"/post/delete",
+					data:{"postId":postId},
+					success:function(data){
+						if(data.result == "success"){
+							alert("삭제 성공");
+							location.href="/post/list_view";
+						}
+						else{
+							alert("삭제 실패");
+						}
+					},
+					error:function(){
+						alert("에러발생");
+					}
+				});
+			});
+		});
+	</script>
 </html>
